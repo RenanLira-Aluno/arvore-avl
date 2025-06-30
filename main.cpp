@@ -43,24 +43,24 @@ Node *rotacaoDireita(Node *y)
     return x;
 }
 
-Node *rotacaoDuplaDireita(Node *y)
-{
-    y->esquerda = rotacaoEsquerda(y->esquerda);
-    return rotacaoDireita(y);
-}
-
 Node *rotacaoEsquerda(Node *x)
 {
     Node *y = x->direita;
     Node *T2 = y->esquerda;
-
+    
     y->esquerda = x;
     x->direita = T2;
 
     atualizarAltura(x);
     atualizarAltura(y);
-
+    
     return y;
+}
+
+Node *rotacaoDuplaDireita(Node *y)
+{
+    y->esquerda = rotacaoEsquerda(y->esquerda);
+    return rotacaoDireita(y);
 }
 
 Node *rotacaoDuplaEsquerda(Node *x)
@@ -148,15 +148,13 @@ Node *remover(Node *raiz, int valor)
         return rotacaoDireita(raiz);
     if (fb > 1 && fatorBalanceamento(raiz->esquerda) < 0)
     {
-        raiz->esquerda = rotacaoEsquerda(raiz->esquerda);
-        return rotacaoDireita(raiz);
+        return rotacaoDuplaDireita(raiz);
     }
     if (fb < -1 && fatorBalanceamento(raiz->direita) <= 0)
         return rotacaoEsquerda(raiz);
     if (fb < -1 && fatorBalanceamento(raiz->direita) > 0)
     {
-        raiz->direita = rotacaoDireita(raiz->direita);
-        return rotacaoEsquerda(raiz);
+        return rotacaoDuplaEsquerda(raiz);
     }
 
     return raiz;
